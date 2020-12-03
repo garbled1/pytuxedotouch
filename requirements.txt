@@ -2,3 +2,4 @@ beautifulsoup4
 requests
 urllib3
 pycryptodome
+httpx==0.16.1
