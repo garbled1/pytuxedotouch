@@ -27,6 +27,18 @@ async def test_basic(host, username, password):
     foo = await tux.GetDeviceList('All')
     print(foo)
 
+    print()
+    print("Calling ViewEnrolledDeviceMAC")
+    print()
+    foo = await tux.ViewEnrolledDeviceMAC()
+    print(foo)
+
+    print()
+    print("Calling GetSceneList")
+    print()
+    foo = await tux.GetSceneList()
+    print(foo)
+
     await tux.disconnect()
     exit(0)
 

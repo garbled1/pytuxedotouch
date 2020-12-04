@@ -193,8 +193,22 @@ class TuxedoTouchWiFi:
         if r.status_code != 200:
             logging.error(f'Unknown error in post_api status={r.status_code}')
             return None
+
         r_data = json.loads(r.text)
-        return TuxAESCipher(self.api_key_bytes, self.api_iv_bytes).decrypt(r_data['Result']).decode('utf-8')
+
+        if 'Result' in r_data:
+            result = TuxAESCipher(self.api_key_bytes, self.api_iv_bytes).decrypt(r_data['Result']).decode('utf-8')
+            try:
+                json.loads(result)
+            except json.decoder.JSONDecodeError:
+                logger.error('Bad json result in post reply')
+                logger.error(result)
+                return None
+            return result
+        else:
+            logger.warning('Unknown result in post reply')
+            logger.warning(r.text)
+            return None
 
     # Remaining API calls, in order as they appear on the tuxedoapi.html page.
 
